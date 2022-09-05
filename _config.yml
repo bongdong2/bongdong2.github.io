@@ -8,7 +8,6 @@ baseurl: "/bay" # the subpath of the site
 url: "https://bongdong2.github.io" # the base hostname & protocol for the site
 #og_image: /assets/img/profile-pic.jpg
 #google_analytics: "UA-121636368-3"
-
 header:
   pages:
     - name: Home
@@ -22,23 +21,23 @@ footer:
     - name: Email
       value: jsu373712@naver.com
       link: mailto:jsu373712@naver.com
-    - name: 좌승의(Jwa)
-      value: YourWeChatUsername
-      link: "#"
+    # - name: 좌승의(JWA SEUNG-UI)
+    #   value: YourWeChatUsername
+    #   link: "#"
   follow:
-    - name: Twitter
-      link: http://twitter.com/YourTwitterUsername
-      username: "@YourTwitterUsername"
-    - name: Facebook
-      link: http://facebook.com/YourFacebookUsername
-    - name: LinkedIn
-      link: http://linkedin.com/in/YourLinkedInUsername
+    # - name: Twitter
+    #   link: http://twitter.com/YourTwitterUsername
+    #   username: "@YourTwitterUsername"
+    # - name: Facebook
+    #   link: http://facebook.com/YourFacebookUsername
+    # - name: LinkedIn
+    #   link: http://linkedin.com/in/YourLinkedInUsername
     - name: GitHub
-      link: http://github.com/YourGitHubUsername
-    - name: Dribbble
-      link: https://dribbble.com/YourDribbbleUsername
-    - name: RSS
-      link: /feed.xml
+      link: http://github.com/bongdong2
+    # - name: Dribbble
+    #   link: https://dribbble.com/YourDribbbleUsername
+    # - name: RSS
+    #   link: /feed.xml
 
 # Build settings
 markdown: kramdown
