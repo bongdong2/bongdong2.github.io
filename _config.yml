@@ -12,7 +12,7 @@ header:
   pages:
     - name: Home
       slug: /
-    - name: Work
+    #- name: Work
     - name: Blog
 
 footer:
