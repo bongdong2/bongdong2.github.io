@@ -1,7 +1,7 @@
 ---
 title: "HTML & CSS - Basics"
 date: 2020-06-14 14:32:00 -0400
-categories: html&css
+categories: html
 ---
 
 html & css 기본

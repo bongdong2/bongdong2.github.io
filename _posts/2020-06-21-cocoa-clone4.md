@@ -1,7 +1,7 @@
 ---
 title: "HTML & CSS - practice 1"
 date: 2020-06-28 16:48:00 -0400
-categories: html&css
+categories: html
 ---
 
 ## 0. 사전작업
