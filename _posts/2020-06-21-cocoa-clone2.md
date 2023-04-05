@@ -1,7 +1,7 @@
 ---
 title: "HTML & CSS - Flex"
 date: 2020-06-14 18:05:00 -0400
-categories: html&css
+categories: html
 ---
 
 플렉스란?
