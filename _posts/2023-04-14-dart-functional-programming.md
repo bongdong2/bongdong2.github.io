@@ -145,6 +145,10 @@ void main() {
     next : 9
     total : 25
     25
-   * /
+   */
+
+   // 1 + 3 + 5 + 7 + 9
+  final int result = numbers.reduce((prev, next) => prev + next);
+  print(result); // 25
 }
 ```
