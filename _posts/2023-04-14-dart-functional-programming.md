@@ -6,9 +6,10 @@ categories: flutter
 
 ## Functional Programming
 
+### List, Map, Set
+
 ```dart
 void main() {
-
   List<String> animals = ['개', '고양이', '말', '소', '호랑이', '호랑이'];
   print(animals); // [개, 고양이, 말, 소, 호랑이, 호랑이]
 
@@ -28,5 +29,122 @@ void main() {
   Set animalsSet = Set.from(animals);
   print(animalsSet); // {개, 고양이, 말, 소, 호랑이}
   print(animalsSet.toList()); // [개, 고양이, 말, 소, 호랑이]
+}
+```
+
+### .map()
+
+```dart
+void main() {
+  List<String> animals = ['개', '고양이', '말', '소', '호랑이'];
+
+  // map
+  final newAnimals = animals.map((x) {
+    return '친환경 $x';
+  });
+  print(animals); // [개, 고양이, 말, 소, 호랑이]
+  print(newAnimals); // (친환경 개, 친환경 고양이, 친환경 말, 친환경 소, 친환경 호랑이)
+
+  // // 한 줄이면 arrow(=>)사용
+  final arrowAnimals = animals.map((x) => '화살 $x');
+  print(arrowAnimals); // (화살 개, 화살 고양이, 화살 말, 화살 소, 화살 호랑이)
+  print(arrowAnimals.toList()); // [화살 개, 화살 고양이, 화살 말, 화살 소, 화살 호랑이]
+
+  // map을 사용하면 다른 녀석이 되는군
+  print(animals == animals); // true
+  print(animals == newAnimals); // false
+  print(newAnimals == arrowAnimals); // false
+
+  // 문자를 split하고 map으로 순회하면서 '.jpg'를 추가하고 리스트로 반환
+  String number = '12345';
+  final parsed = number.split('').map((x) => '$x.jpg').toList();
+  print(parsed); // [1.jpg, 2.jpg, 3.jpg, 4.jpg, 5.jpg]
+}
+```
+
+```dart
+void main() {
+  Map<String, String> mdtb = {
+    'CEO' : 'Cho ES',
+    'COO' : 'Lee SA',
+    'CTO' : 'Jwa SU',
+  };
+
+  // MAP의 .map 사용법
+  final result = mdtb.map(
+    (key, value) => MapEntry(
+      'rank $key',
+      'name $value',
+    ),
+  );
+
+  print(mdtb); // {CEO: Cho ES, COO: Lee SA, CTO: Jwa SU}
+  print(result); // {rank CEO: name Cho ES, rank COO: name Lee SA, rank CTO: name Jwa SU}
+
+  final keys = mdtb.keys.map((x) => 'mdtb $x').toList();
+  final values = mdtb.values.map((x) => 'mdtb $x').toList();
+  print(keys); // [mdtb 직급 : CEO, mdtb 직급 : COO, mdtb 직급 : CTO]
+  print(values); // [mdtb 인간명 : Cho ES, mdtb 인간명 : Lee SA, mdtb 인간명 : Jwa SU]
+}
+```
+
+### .where
+
+```dart
+void main() {
+  Set mdtbSet = {
+    '조성은',
+    '이아상',
+    '좌의승',
+  };
+
+  final mySet = mdtbSet.map((x) => 'mdtb $x').toSet();
+  print(mySet); // {mdtb 조성은, mdtb 이아상, mdtb 좌의승}
+
+  // .where()는 필터링 해주네
+  final femail = people.where((x) => x['gender'] == 'F').toList();
+  final male = people.where((x) => x['gender'] == 'M').toList();
+  print(femail); // [{name: 이아상, gender: F}, {name: 조성은, gender: F}]
+  print(male); // [{name: 좌의승, gender: M}]
+}
+```
+
+### .reduce
+
+```dart
+void main() {
+  List<int> numbers = [1, 3, 5, 7, 9];
+
+  final int result = numbers.reduce((prev, next) {
+    print('----------------');
+    print('previous : $prev');
+    print('next : $next');
+    print('total : ${prev + next}');
+
+    // 리턴된 값이 prev로 들어가는군!
+    // 1+3, 4+5, 9+7, 16+9
+    return prev + next;
+  });
+  print(result);
+
+  /*
+    ----------------
+    previous : 1
+    next : 3
+    total : 4
+    ----------------
+    previous : 4
+    next : 5
+    total : 9
+    ----------------
+    previous : 9
+    next : 7
+    total : 16
+    ----------------
+    previous : 16
+    next : 9
+    total : 25
+    25
+   * /
 }
 ```
