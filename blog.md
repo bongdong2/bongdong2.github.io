@@ -4,5 +4,5 @@ title: Blog
 slug: /blog
 ---
 
-"Blog" page, displaying a list of posts.
+블로그
 <br />
