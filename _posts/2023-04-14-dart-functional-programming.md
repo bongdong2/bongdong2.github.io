@@ -32,7 +32,7 @@ void main() {
 }
 ```
 
-### .map()
+### map
 
 ```dart
 void main() {
@@ -88,7 +88,7 @@ void main() {
 }
 ```
 
-### .where
+### where
 
 ```dart
 void main() {
@@ -109,7 +109,7 @@ void main() {
 }
 ```
 
-### .reduce
+### reduce
 
 ```dart
 void main() {
@@ -150,5 +150,126 @@ void main() {
    // 1 + 3 + 5 + 7 + 9
   final int result = numbers.reduce((prev, next) => prev + next);
   print(result); // 25
+}
+```
+
+### .fold
+```dart
+void main() {
+   
+  List<String> words = ['오징어', '금붕어', '기러기'];
+  final sentence = words.reduce((prev, next) => prev + next);
+  print(sentence); // 오징어금붕어기러기
+  
+  List<int> numbers = [1, 3, 5, 7, 9];
+  final sum = numbers.fold<int>(0, (prev, next) {
+    print('------------');
+    print('prev : $prev');
+    print('next : $next');
+    print('total : $prev + $next');
+    return prev + next;
+  });
+  /*
+  ------------
+  prev : 0
+  next : 1
+  total : 0 + 1
+  ------------
+  prev : 1
+  next : 3
+  total : 1 + 3
+  ------------
+  prev : 4
+  next : 5
+  total : 4 + 5
+  ------------
+  prev : 9
+  next : 7
+  total : 9 + 7
+  ------------
+  prev : 16
+  next : 9
+  total : 16 + 9
+  */
+  
+  print(sum); // 25
+  
+  // prev는 int니까 .length 없음
+  final wordsLength = words.fold<int>(0, (prev, next) => prev + next.length);
+  print(wordsLength); // 9
+}
+```
+
+### ...(cascading operator)
+```dart
+void main() {
+  List<int> even = [2, 4, 6, 8];
+  List<int> odd = [1, 3, 5, 7];
+  
+  print([...even, ...odd]);  // [2, 4, 6, 8, 1, 3, 5, 7]
+  print(even);               // [2, 4, 6, 8]
+  print([...even]);          // [2, 4, 6, 8]
+  print(even == [...even]);  // false
+}
+```
+
+### bla bla
+```dart
+void main() {
+  final List<Map<String, String>> people = [
+    {
+      'name': '봉동이',
+      'gender': 'M',
+    },
+    {
+      'name': '은승',
+      'gender': 'F',
+    },
+    {
+      'name': '아상',
+      'gender': 'F',
+    },
+  ];
+
+  print(people); // [{name: 봉동이, gender: M}, {name: 은승, gender: F}, {name: 아상, gender: F}]
+  final parsedPeople = people
+      .map((x) => Person(
+            name: x['name']!,
+            gender: x['gender']!,
+          ))
+      .toList();
+
+  print(
+      parsedPeople); // toString 메소드 없다면 -> [Instance of 'Person', Instance of 'Person', Instance of 'Person']]
+
+  for (Person person in parsedPeople) {
+    print(person.name);
+    print(person.gender);
+  }
+
+//   봉동이
+//   M
+//   은승
+//   F
+//   아상
+//   F
+
+  final femele = parsedPeople.where((x) => x.gender == 'F');
+  print(femele); // toString 메소드 만든 후 -> (Person(name: 은승, gender: F), Person(name: 아상, gender: F))
+}
+
+class Person {
+  final String name;
+  final String gender;
+
+  Person({
+    required this.name,
+    required this.gender,
+  });
+  
+  @override
+  String toString() {
+    return 'Person(name: $name, gender: $gender)';
+  }
 }
 ```
