@@ -16,8 +16,12 @@
 
   {% assign page_description = "" %}
   {% if page.draft %}{% assign page_description = page_description | append: "[DRAFT] " %}{% endif %}
-  {% if page.blurb %}
+  {% if page.description %}
+    {% assign page_description = page_description | append: page.description %}
+  {% elsif page.blurb %}
     {% assign page_description = page_description | append: page.blurb %}
+  {% elsif page.excerpt %}
+    {% assign page_description = page_description | append: page.excerpt | strip_html | truncate: 160 %}
   {% else %}
     {% assign page_description = site.description %}
   {% endif %}
@@ -40,6 +44,12 @@
   <title>{{ page_title }}</title>
   <meta name="title" content="{{ page_title }}"/>
   <meta name="description" content="{{ page_description }}"/>
+  {% if page.categories %}
+    <meta name="keywords" content="{{ page.categories | join: ', ' }}"/>
+  {% endif %}
+  {% if page.author %}
+    <meta name="author" content="{{ page.author }}"/>
+  {% endif %}
 
   <!-- Open Graph / Facebook -->
   <meta property="og:site_name" content="{{ page_title }}"/>
@@ -72,5 +82,52 @@
   </script>
   <script async src="https://www.google-analytics.com/analytics.js"></script>
 
+  <!-- Structured Data -->
+  {% if page_is_article %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "{{ page.title }}",
+    "description": "{{ page_description }}",
+    "image": "{{ page_image }}",
+    "url": "{{ page_url }}",
+    "datePublished": "{{ page.date | date_to_xmlschema }}",
+    "dateModified": "{% if page.last_modified_at %}{{ page.last_modified_at | date_to_xmlschema }}{% else %}{{ page.date | date_to_xmlschema }}{% endif %}",
+    "author": {
+      "@type": "Person",
+      "name": "{% if page.author %}{{ page.author }}{% else %}{{ site.title }}{% endif %}"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "{{ site.title }}",
+      "url": "{{ site.url }}",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "{{ site.og_image | prepend: site.url }}"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "{{ page_url }}"
+    }
+  }
+  </script>
+  {% else %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "{{ site.title }}",
+    "description": "{{ site.description }}",
+    "url": "{{ site.url }}",
+    "publisher": {
+      "@type": "Organization",
+      "name": "{{ site.title }}",
+      "url": "{{ site.url }}"
+    }
+  }
+  </script>
+  {% endif %}
 
 </head>

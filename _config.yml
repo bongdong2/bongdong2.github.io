@@ -6,8 +6,8 @@ description: >- # this means to ignore newlines until "baseurl:"
   기록한다고 다 기억하는 것은 아니다.
 #baseurl: # the subpath of the site
 url: "https://bongdong2.github.io" # the base hostname & protocol for the site
-#og_image: /assets/img/profile-pic.jpg
-#google_analytics: "UA-121636368-3"
+og_image: /assets/img/profile-pic.jpg
+google_analytics: "UA-121636368-3"
 header:
   pages:
     - name: Home
@@ -36,8 +36,8 @@ footer:
       link: http://github.com/bongdong2
     # - name: Dribbble
     #   link: https://dribbble.com/YourDribbbleUsername
-    # - name: RSS
-    #   link: /feed.xml
+    - name: RSS
+      link: /feed.xml
 
 # Build settings
 markdown: kramdown
@@ -50,7 +50,6 @@ plugins:
 exclude:
   - .sass-cache/
   - .jekyll-cache/
-  - feed.xml
   - gemfiles/
   - Gemfile
   - Gemfile.lock

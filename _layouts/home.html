@@ -15,6 +15,39 @@
           />
 
           {{ content }}
+
+          <section class="recent-posts">
+            <h2>최근 포스트</h2>
+            <div class="posts-grid">
+              {% for post in site.posts limit:5 %}
+                {% unless post.draft %}
+                  <article class="post-card">
+                    <div class="post-meta">
+                      <time class="post-date">{{ post.date | date: "%Y.%m.%d" }}</time>
+                      {% if post.categories %}
+                        <span class="post-category">{{ post.categories | first }}</span>
+                      {% endif %}
+                    </div>
+                    <h3 class="post-title">
+                      <a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+                    </h3>
+                    <div class="post-excerpt">
+                      {% if post.description %}
+                        {{ post.description }}
+                      {% elsif post.excerpt %}
+                        {{ post.excerpt | strip_html | truncate: 120 }}
+                      {% else %}
+                        {{ post.content | strip_html | truncate: 120 }}
+                      {% endif %}
+                    </div>
+                  </article>
+                {% endunless %}
+              {% endfor %}
+            </div>
+            <div class="view-all-posts">
+              <a href="/blog" class="btn-view-all">모든 포스트 보기 →</a>
+            </div>
+          </section>
         </div>
       </div>
     </div>
