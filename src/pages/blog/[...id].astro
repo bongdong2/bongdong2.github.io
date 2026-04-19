@@ -30,7 +30,11 @@ const { Content } = await render(post);
 const fmtDate = (d: Date) =>
   d.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
 ---
-<BaseLayout title={`${post.data.title} — 봉동이.blog`} description={post.data.description}>
+<BaseLayout
+  title={`${post.data.title} — 봉동이.blog`}
+  description={post.data.description}
+  article={{ pubDate: post.data.pubDate, tags: post.data.tags }}
+>
   <Header />
 
   <header class="post-hero">
