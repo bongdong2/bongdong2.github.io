@@ -1,18 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
   {% include head.html %}
 
   <body>
-    {% include header.html %}
-
-    <div class="page-content">
-      <div class="wrapper">
-        {{ content }}
-      </div>
+    <div class="page fade-in">
+      {% include header.html %}
+      {{ content }}
+      {% include footer.html %}
     </div>
-
-    {% include footer.html %}
-    
     {% include foot.html %}
   </body>
 </html>

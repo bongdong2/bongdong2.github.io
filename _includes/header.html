@@ -1,25 +1,11 @@
-<header class="site-header">
-  <div class="wrapper">
-    <a class="site-title" href="{{ "" | prepend: site.baseurl | prepend: site.url }}/">
-      <img src="{{ "/assets/img/title3.png" | absolute_url }}" alt="{{ site.title }}" />
-    </a>
-
-    <nav class="site-nav">
-      <a href="#" class="menu-icon"></a>
-
-      <div class="menu">
-        {% for page in site.header.pages %}
-          {% if page.slug and page.slug != "" and page.slug != nil %}
-            {% assign page_link = page.slug %}
-          {% else %}
-            {% assign page_link = "/" | append: page.name | downcase %}
-          {% endif %}
-          {% assign page_link = page_link | absolute_url %}
-          <a class="page-link" href="{{ page_link }}">
-            {{ page.name }}
-          </a>
-        {% endfor %}
-      </div>
-    </nav>
+{% assign current_path = page.url | default: '/' %}
+<nav class="nav">
+  <a class="nav__brand" href="{{ "/" | absolute_url }}">
+    bongdong2<span class="dot">.</span>blog
+  </a>
+  <div class="nav__links">
+    <a class="{% if current_path == '/' or current_path == '/index.html' %}active{% endif %}" href="{{ "/" | absolute_url }}">Writing</a>
+    <a class="{% if current_path contains '/blog' %}active{% endif %}" href="{{ "/blog" | absolute_url }}">Archive</a>
+    <a class="{% if current_path contains '/work' %}active{% endif %}" href="{{ "/work" | absolute_url }}">About</a>
   </div>
-</header>
+</nav>

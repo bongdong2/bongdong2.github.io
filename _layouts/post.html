@@ -1,47 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
   {% include head.html %}
 
   <body>
-    {% include header.html %}
+    <div class="page fade-in">
+      {% include header.html %}
 
-    <div class="page-content">
-      <div class="wrapper">
-        <div class="post">
+      {% if page.draft %}{% include draft-banner.html %}{% endif %}
 
-          <header class="post-header">
+      <header class="post-hero">
+        {% if page.categories.size > 0 %}
+          <div class="post-hero__kicker">
+            {% for c in page.categories %}{{ c }}{% unless forloop.last %} · {% endunless %}{% endfor %}
+          </div>
+        {% endif %}
+        <h1 class="post-hero__title">
+          {% if page.headline_formatted_title %}
+            {{ page.headline_formatted_title | newline_to_br }}
+          {% else %}
+            {{ page.title }}
+          {% endif %}
+        </h1>
+        <div class="post-hero__meta">
+          <span>{{ page.date | date: "%b %d, %Y" }}</span>
+          {% if page.author %}<span class="sep">·</span><span>{{ page.author }}</span>{% endif %}
+          {% if page.meta %}<span class="sep">·</span><span>{{ page.meta }}</span>{% endif %}
+        </div>
+      </header>
 
-            {% if page.draft %}
-              {% include draft-banner.html %}
-            {% endif %}
+      <article class="prose">
+        {{ content }}
+      </article>
 
-            <h1 class="post-title">
-            {% if page.headline_formatted_title %}
-              {{ page.headline_formatted_title | newline_to_br }}
-            {% else %}
-              {{ page.title }}
-            {% endif %}
-            </h1>
+      {% if page.draft %}{% include draft-banner.html %}{% endif %}
 
-            {% if page.subtitle %}<h1 class="post-subtitle">{{ page.subtitle }}</h1>{% endif %}
-            <p class="post-meta"><span class="post-date">{{ page.date | date: "%B %-d, %Y" }}
-            </span>{% if page.author %} • {{ page.author }}{% endif %}{% if page.meta %} • {{ page.meta }}{% endif %}</p>
-          </header>
-
-          <article class="post-content">
-            {{ content }}
-          </article>
-
-          {% if page.draft %}
-              {% include draft-banner.html %}
+      <div class="post-footer">
+        <div class="prev-next">
+          {% if page.previous %}
+            <a class="pn-card prev" href="{{ page.previous.url | relative_url }}">
+              <div class="pn-card__label">← Previous</div>
+              <div class="pn-card__title">{{ page.previous.title }}</div>
+            </a>
+          {% else %}
+            <span class="pn-card empty"></span>
           {% endif %}
 
+          {% if page.next %}
+            <a class="pn-card next" href="{{ page.next.url | relative_url }}">
+              <div class="pn-card__label">Next →</div>
+              <div class="pn-card__title">{{ page.next.title }}</div>
+            </a>
+          {% else %}
+            <span class="pn-card empty"></span>
+          {% endif %}
+        </div>
       </div>
-      </div>
+
+      {% include footer.html %}
     </div>
-
-    {% include footer.html %}
-
     {% include foot.html %}
   </body>
 </html>
