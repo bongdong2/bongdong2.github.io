@@ -1,0 +1,66 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+const all = await getCollection('blog', ({ data }) => !data.draft);
+const posts = all.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const byYear = new Map<number, typeof posts>();
+for (const p of posts) {
+  const y = p.data.pubDate.getFullYear();
+  if (!byYear.has(y)) byYear.set(y, []);
+  byYear.get(y)!.push(p);
+}
+const years = [...byYear.keys()].sort((a, b) => b - a);
+
+const fmtShort = (d: Date) =>
+  d.toLocaleDateString('en-US', { month: 'short', day: '2-digit' });
+const pad2 = (n: number) => String(n).padStart(2, '0');
+---
+<BaseLayout title="Archive — 봉동이.blog" description="모든 글">
+  <Header current="archive" />
+
+  <section class="hero">
+    <div class="hero__intro">
+      <span class="dot"></span>
+      <span>Archive · 전체 글</span>
+    </div>
+    <h1 class="h-display">모든 글</h1>
+  </section>
+
+  {years.map((year) => {
+    const group = byYear.get(year)!;
+    return (
+      <section class="year-section">
+        <div class="sec-head">
+          <h3 class="sec-head__title">{year}</h3>
+          <span class="sec-head__count">{pad2(group.length)}</span>
+          <div class="sec-head__rule"></div>
+        </div>
+        <ol class="post-list">
+          {group.map((p, i) => (
+            <a class="post-item" href={`/blog/${p.id}/`}>
+              <span class="post-item__num">{pad2(group.length - i)}</span>
+              <div class="post-item__body">
+                <h3 class="post-item__title">{p.data.title}</h3>
+                {p.data.description && (
+                  <p class="post-item__excerpt">{p.data.description}</p>
+                )}
+                {p.data.tags.length > 0 && (
+                  <div class="post-item__tags">
+                    {p.data.tags.map((t) => <span>{t}</span>)}
+                  </div>
+                )}
+              </div>
+              <span class="post-item__date">{fmtShort(p.data.pubDate)}</span>
+            </a>
+          ))}
+        </ol>
+      </section>
+    );
+  })}
+
+  <Footer />
+</BaseLayout>

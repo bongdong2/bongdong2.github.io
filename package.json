@@ -1,0 +1,16 @@
+{
+  "name": "bongdong2-blog",
+  "type": "module",
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^6.1.8",
+    "@astrojs/rss": "^4.0.18",
+    "@astrojs/sitemap": "^3.7.2"
+  }
+}

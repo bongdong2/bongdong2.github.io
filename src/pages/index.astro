@@ -1,0 +1,94 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const all = await getCollection('blog', ({ data }) => !data.draft);
+const posts = all.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const featured = posts[0];
+const rest = posts.slice(1);
+
+const byYear = new Map<number, typeof rest>();
+for (const p of rest) {
+  const y = p.data.pubDate.getFullYear();
+  if (!byYear.has(y)) byYear.set(y, []);
+  byYear.get(y)!.push(p);
+}
+const years = [...byYear.keys()].sort((a, b) => b - a);
+
+const fmtDate = (d: Date) =>
+  d.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+const fmtShort = (d: Date) =>
+  d.toLocaleDateString('en-US', { month: 'short', day: '2-digit' });
+const pad2 = (n: number) => String(n).padStart(2, '0');
+---
+<BaseLayout title="봉동이.blog — Writing on servers & mobile" description="서버와 앱 사이, 그 틈에서 배운 것들을 적어둡니다.">
+  <Header current="home" />
+
+  <section class="hero">
+    <div class="hero__intro">
+      <span class="dot"></span>
+      <span>Writing / journal · 봉동이</span>
+    </div>
+    <h1 class="h-display">
+      서버와 앱 사이, <em>그 틈에서</em> 배운 것들을 적어둡니다.
+    </h1>
+    <p class="hero__sub">
+      Spring과 Flutter를 오가며 일합니다. 회고와 TIL, 가끔 긴 글.
+    </p>
+  </section>
+
+  {featured && (
+    <a class="featured" href={`/blog/${featured.id}/`}>
+      <div class="featured__label">Latest · Long read</div>
+      <h2 class="featured__title">{featured.data.title}</h2>
+      {featured.data.description && (
+        <p class="featured__excerpt">{featured.data.description}</p>
+      )}
+      <div class="featured__meta">
+        <span>{fmtDate(featured.data.pubDate)}</span>
+        {featured.data.tags.length > 0 && (
+          <>
+            <span>·</span>
+            <span>{featured.data.tags.map((t) => `#${t}`).join(' ')}</span>
+          </>
+        )}
+      </div>
+    </a>
+  )}
+
+  {years.map((year) => {
+    const group = byYear.get(year)!;
+    return (
+      <section class="year-section">
+        <div class="sec-head">
+          <h3 class="sec-head__title">{year}</h3>
+          <span class="sec-head__count">{pad2(group.length)}</span>
+          <div class="sec-head__rule"></div>
+        </div>
+        <ol class="post-list">
+          {group.map((p, i) => (
+            <a class="post-item" href={`/blog/${p.id}/`}>
+              <span class="post-item__num">{pad2(group.length - i)}</span>
+              <div class="post-item__body">
+                <h3 class="post-item__title">{p.data.title}</h3>
+                {p.data.description && (
+                  <p class="post-item__excerpt">{p.data.description}</p>
+                )}
+                {p.data.tags.length > 0 && (
+                  <div class="post-item__tags">
+                    {p.data.tags.map((t) => <span>{t}</span>)}
+                  </div>
+                )}
+              </div>
+              <span class="post-item__date">{fmtShort(p.data.pubDate)}</span>
+            </a>
+          ))}
+        </ol>
+      </section>
+    );
+  })}
+
+  <Footer />
+</BaseLayout>

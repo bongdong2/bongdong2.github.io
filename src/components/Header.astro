@@ -1,0 +1,12 @@
+---
+const { current } = Astro.props as { current?: 'home' | 'archive' };
+---
+<nav class="nav">
+  <a class="nav__brand" href="/">
+    bongdong2<span class="dot">.</span>blog
+  </a>
+  <div class="nav__links">
+    <a class={current === 'home' ? 'active' : ''} href="/">Writing</a>
+    <a class={current === 'archive' ? 'active' : ''} href="/blog">Archive</a>
+  </div>
+</nav>

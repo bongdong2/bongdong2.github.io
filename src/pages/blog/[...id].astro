@@ -1,0 +1,71 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+export async function getStaticPaths() {
+  const all = await getCollection('blog', ({ data }) => !data.draft);
+  const sorted = all.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+  return sorted.map((post, i) => ({
+    params: { id: post.id },
+    props: {
+      post,
+      prev: sorted[i + 1] ?? null,
+      next: sorted[i - 1] ?? null,
+    },
+  }));
+}
+
+type Props = {
+  post: CollectionEntry<'blog'>;
+  prev: CollectionEntry<'blog'> | null;
+  next: CollectionEntry<'blog'> | null;
+};
+
+const { post, prev, next } = Astro.props as Props;
+const { Content } = await render(post);
+
+const fmtDate = (d: Date) =>
+  d.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+---
+<BaseLayout title={`${post.data.title} — 봉동이.blog`} description={post.data.description}>
+  <Header />
+
+  <header class="post-hero">
+    {post.data.tags.length > 0 && (
+      <div class="post-hero__kicker">
+        {post.data.tags.join(' · ')}
+      </div>
+    )}
+    <h1 class="post-hero__title">{post.data.title}</h1>
+    <div class="post-hero__meta">
+      <span>{fmtDate(post.data.pubDate)}</span>
+    </div>
+  </header>
+
+  <article class="prose">
+    <Content />
+  </article>
+
+  <div class="post-footer">
+    <div class="prev-next">
+      {prev ? (
+        <a class="pn-card prev" href={`/blog/${prev.id}/`}>
+          <div class="pn-card__label">← Previous</div>
+          <div class="pn-card__title">{prev.data.title}</div>
+        </a>
+      ) : <span class="pn-card empty"></span>}
+
+      {next ? (
+        <a class="pn-card next" href={`/blog/${next.id}/`}>
+          <div class="pn-card__label">Next →</div>
+          <div class="pn-card__title">{next.data.title}</div>
+        </a>
+      ) : <span class="pn-card empty"></span>}
+    </div>
+  </div>
+
+  <Footer />
+</BaseLayout>

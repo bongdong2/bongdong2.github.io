@@ -1,3 +1,19 @@
+.DS_Store
 _site
 .sass-cache
 .jekyll-cache
+.jekyll-metadata
+vendor
+Gemfile.lock
+
+# Astro
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+!.env.example
+
+# editor
+.vscode/
+.idea/
